@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c): All rights reserved by EXCELLENCE ICT, 2017
+  -->
+
+<resources>
+    <string name="app_name">Daily Cost Calc</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string-array name="categorys">
+        <item>Beauty</item>
+        <item>Books</item>
+        <item>Business</item>
+        <item>Comics</item>
+        <item>Communication</item>
+        <item>Dating</item>
+        <item>Drink</item>
+        <item>Education</item>
+        <item>Events</item>
+        <item>Food</item>
+        <item>Gift</item>
+        <item>Health</item>
+        <item>HouseHold</item>
+        <item>Library</item>
+        <item>Transport</item>
+
+    </string-array>
+    <string name="title_activity_add_debit">AddDebitActivity</string>
+
+
+</resources>

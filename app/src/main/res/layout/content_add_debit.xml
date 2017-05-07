@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/ibDebitSave"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/ibDebitCancel"
+        android:layout_toStartOf="@+id/ibDebitCancel"
+        app:srcCompat="@drawable/ic_save" />
+
+    <ImageButton
+        android:id="@+id/ibDebitCancel"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="12dp"
+        android:layout_marginRight="12dp"
+        app:srcCompat="@drawable/ic_cancel" />
+
+
+    <LinearLayout
+        android:layout_below="@+id/ibDebitCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:id="@+id/tvDebitDate"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="25sp"
+            android:textColor="@color/textColorBlack"
+            android:gravity="center"
+            android:text="Date" />
+
+        <Spinner
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:spinnerMode="dropdown"
+            android:id="@+id/spCategory"
+            android:layout_weight="1" />
+
+        <EditText
+            android:id="@+id/etDebitDescription"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:ems="10"
+            android:hint="Description"
+            android:inputType="textMultiLine" />
+
+        <EditText
+            android:id="@+id/etDebitTotalAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Total Amount"
+            android:inputType="numberDecimal" />
+
+        <Button
+            android:id="@+id/btnDebitScan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scan" />
+
+    </LinearLayout>
+
+</RelativeLayout>
