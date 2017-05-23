@@ -1,16 +1,20 @@
 package backbencers.nub.dailycostcalc.fragments;
 
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -72,7 +76,32 @@ public class CreditFragment extends Fragment {
 
         loadCredits();
 
+        creditListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showCreditDetailInDialog(position);
+            }
+        });
+
         return view;
+    }
+
+    private void showCreditDetailInDialog(int position) {
+        AlertDialog.Builder builder;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+        } else {
+            builder = new AlertDialog.Builder(getContext());
+        }
+        Credit credit = (Credit) creditListView.getItemAtPosition(position);
+        builder.setTitle(credit.getCreditDate())
+                .setMessage(credit.getCreditDescription())
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .show();
     }
 
     @Override
@@ -114,7 +143,7 @@ public class CreditFragment extends Fragment {
                         String messageBodyNormal = creditCursor.getString(idx);
                         String messageBodyLowerCase = messageBodyNormal.toLowerCase();
 
-                        if (messageBodyLowerCase.contains("credited") || messageBodyLowerCase.contains("cash in")) {
+                        if (messageBodyLowerCase.contains("credited") || messageBodyLowerCase.contains("cash in") || messageBodyLowerCase.contains("received")) {
                             Log.i(TAG, creditCursor.getString(idx));
 
                             credit.setCreditDescription(messageBodyNormal);
