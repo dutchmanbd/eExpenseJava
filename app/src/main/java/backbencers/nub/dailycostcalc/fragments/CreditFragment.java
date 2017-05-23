@@ -111,10 +111,16 @@ public class CreditFragment extends Fragment {
 
                     if (creditCursor.getColumnName(idx).equals("body")) {
                         // TODO: add logic to add only the credit messages
-                        if (creditCursor.getString(idx).toLowerCase().contains("credited")) {
+                        String messageBodyNormal = creditCursor.getString(idx);
+                        String messageBodyLowerCase = messageBodyNormal.toLowerCase();
+
+                        if (messageBodyLowerCase.contains("credited") || messageBodyLowerCase.contains("cash in")) {
                             Log.i(TAG, creditCursor.getString(idx));
-                            credit.setCreditDescription(creditCursor.getString(idx));
-                            credit.setCreditAmount(5000.0);
+
+                            credit.setCreditDescription(messageBodyNormal);
+
+                            credit.setCreditAmount(findCreditAmountFromMessageBody(messageBodyLowerCase));
+
                             expenseDataSource.insertCredit(credit);
                         }
                     }
@@ -155,6 +161,30 @@ public class CreditFragment extends Fragment {
             adapter = new CreditListAdapter(getContext(), creditList);
             creditListView.setAdapter(adapter);
         }
+    }
+
+    private Double findCreditAmountFromMessageBody(String messageBody) {
+        int indexOfTaka = -1;
+        if (messageBody.contains("bdt")) {
+            indexOfTaka = messageBody.indexOf("bdt");
+        } else if (messageBody.contains("tk")) {
+            indexOfTaka = messageBody.indexOf("tk");
+        }
+
+        double creditAmount = 0;
+        if (indexOfTaka != -1) {
+            for (int i=indexOfTaka; i<messageBody.length(); i++) {
+                char c = messageBody.charAt(i);
+                if (Character.isDigit(c)) {
+                    int digit = (int) c - 48;
+                    creditAmount = (creditAmount * 10) + digit;
+                } else if (c == '.') {
+                    break;
+                }
+            }
+        }
+
+        return creditAmount;
     }
 
     /*private void readMessages() {
