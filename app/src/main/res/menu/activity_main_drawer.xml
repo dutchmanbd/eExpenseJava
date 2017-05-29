@@ -6,16 +6,17 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_debit"
-
+            android:icon="@drawable/ic_debit"
             android:title="Debit" />
         <item
             android:id="@+id/nav_credit"
-
+            android:icon="@drawable/ic_credit"
             android:title="Credit" />
         <item
             android:id="@+id/nav_balance"
-
+            android:icon="@drawable/ic_balance"
             android:title="Balance" />
+
     </group>
 
     <item android:title="Communicate">
@@ -23,6 +24,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/nav_settings"
+
                     android:title="Settings" />
                 <item
                     android:id="@+id/nav_about"
