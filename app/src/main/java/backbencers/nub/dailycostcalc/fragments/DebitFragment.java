@@ -39,6 +39,8 @@ public class DebitFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_debit, container, false);
 
+        getActivity().setTitle("Debit");
+
         ListView debitListView = (ListView) view.findViewById(R.id.lv_debits);
         TextView debitEmptyView = (TextView) view.findViewById(R.id.empty_view_debit);
 

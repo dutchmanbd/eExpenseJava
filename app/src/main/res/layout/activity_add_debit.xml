@@ -20,6 +20,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_add_debit" />
+    <include layout="@layout/content_add_debit"
+        android:id="@+id/layout_content_add_debit"/>
 
 </android.support.design.widget.CoordinatorLayout>

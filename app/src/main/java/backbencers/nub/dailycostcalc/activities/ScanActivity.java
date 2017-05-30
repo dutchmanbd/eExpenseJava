@@ -11,8 +11,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -21,9 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Detector;
-import com.google.android.gms.vision.text.TextBlock;
-import com.google.android.gms.vision.text.TextRecognizer;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,8 +30,6 @@ import java.util.Date;
 import backbencers.nub.dailycostcalc.R;
 import backbencers.nub.dailycostcalc.constant.Constant;
 import backbencers.nub.dailycostcalc.custom.SaveOption;
-import backbencers.nub.dailycostcalc.model.Debit;
-import backbencers.nub.dailycostcalc.objects.ObjectParser;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -201,6 +194,8 @@ public class ScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan);
+
+        getSupportActionBar().setTitle("Scan");
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
 

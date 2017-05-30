@@ -71,8 +71,8 @@ public class ExpenseDataSource {
         this.open();
 
         Cursor cursor = database.query(Constant.TABLE_DEBIT, new String[] {Constant.COL_ID,
-                        Constant.COL_DEBIT_DATE, Constant.COL_DEBIT_CATEGORY, Constant.COL_DEBIT_DESCRIPTION,
-                        Constant.COL_DEBIT_AMOUNT}, Constant.COL_ID + " = " + id, null, null, null, null);
+                Constant.COL_DEBIT_DATE, Constant.COL_DEBIT_CATEGORY, Constant.COL_DEBIT_DESCRIPTION,
+                Constant.COL_DEBIT_AMOUNT}, Constant.COL_ID + " = " + id, null, null, null, null);
 
         cursor.moveToFirst();
         Debit debit = createDebit(cursor);
@@ -119,6 +119,28 @@ public class ExpenseDataSource {
         return debits;
     }
 
+    // return all debit amounts from a specific date
+    private ArrayList<Double> getDebitAmountsInThisDate(String date) {
+        ArrayList<Double> debitAmounts = new ArrayList<>();
+        this.open();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_DEBIT + " WHERE " +
+                Constant.COL_DEBIT_DATE + " = " + date, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i=0; i<cursor.getCount(); i++) {
+                Debit debit = createDebit(cursor);
+                debitAmounts.add(debit.getDebitAmount());
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        database.close();
+
+        return debitAmounts;
+    }
+
     // return all credits from credit table
     public ArrayList<Credit> getAllCredits() {
         ArrayList<Credit> credits = new ArrayList<>();
@@ -140,6 +162,28 @@ public class ExpenseDataSource {
         return credits;
     }
 
+    // return all debit amounts from a specific date
+    private ArrayList<Double> getCreditAmountsInThisDate(String date) {
+        ArrayList<Double> creditAmounts = new ArrayList<>();
+        this.open();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_CREDIT + " WHERE " +
+                Constant.COL_CREDIT_DATE + " = " + date, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i=0; i<cursor.getCount(); i++) {
+                Credit credit = createCredit(cursor);
+                creditAmounts.add(credit.getCreditAmount());
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        database.close();
+
+        return creditAmounts;
+    }
+
     // update a debit with a given value
     public boolean updateDebit(int id, Debit debit) {
         this.open();
@@ -151,7 +195,7 @@ public class ExpenseDataSource {
         contentValues.put(Constant.COL_DEBIT_AMOUNT, debit.getDebitAmount());
 
         int updated = database.update(Constant.TABLE_DEBIT, contentValues,
-                        Constant.COL_ID + " = " + id, null);
+                Constant.COL_ID + " = " + id, null);
         this.close();
 
         return updated>0 ? true:false;
@@ -194,6 +238,35 @@ public class ExpenseDataSource {
         return deleted>0 ? true:false;
     }
 
+    // return total amount of debits
+    private double getTotalDebitAmount() {
+        this.open();
+        Cursor c = database.rawQuery("SELECT SUM("+Constant.COL_DEBIT_AMOUNT+") FROM " + Constant.TABLE_DEBIT, null);
+        c.moveToFirst();
+        double amount = c.getDouble(0);
+        c.close();
+        return amount;
+    }
+
+    // return total amount of credits
+    private double getTotalCreditAmount() {
+        this.open();
+        Cursor c = database.rawQuery("SELECT SUM("+Constant.COL_CREDIT_AMOUNT+") FROM " + Constant.TABLE_CREDIT, null);
+        c.moveToFirst();
+        double amount = c.getDouble(0);
+        c.close();
+        return amount;
+    }
+
+    // delete all credits
+    public void deleteAllCredits() {
+        this.open();
+
+        database.delete(Constant.TABLE_CREDIT, null, null);
+
+        this.close();
+    }
+
     // create a debit from cursor data
     private Debit createDebit(Cursor cursor) {
         int id = cursor.getInt(cursor.getColumnIndex(Constant.COL_ID));
@@ -205,15 +278,6 @@ public class ExpenseDataSource {
         Debit debit = new Debit(id, debitDate, debitCategory, debitDescription, debitAmount);
 
         return debit;
-    }
-
-    // delete all credits
-    public void deleteAllCredits() {
-        this.open();
-
-        database.delete(Constant.TABLE_CREDIT, null, null);
-
-        this.close();
     }
 
     // create a credit from cursor data

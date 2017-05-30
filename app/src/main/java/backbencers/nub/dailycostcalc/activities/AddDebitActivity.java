@@ -1,22 +1,35 @@
 package backbencers.nub.dailycostcalc.activities;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import backbencers.nub.dailycostcalc.R;
+import backbencers.nub.dailycostcalc.constant.Constant;
 
-public class AddDebitActivity extends AppCompatActivity {
+public class AddDebitActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageButton ibDebitSave, ibDebitCancel;
+    private ImageButton ibDebitSave, ibDebitClear;
     private TextView tvDebitDate;
 
     private Spinner spCategory;
@@ -31,6 +44,10 @@ public class AddDebitActivity extends AppCompatActivity {
 
     private List<String> list;
 
+    private String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+    private final int PERMS_REQUEST_CODE = 102;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,11 +55,195 @@ public class AddDebitActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        context = this;
+
+        getSupportActionBar().setTitle("Add Debit");
+
+        View view = findViewById(R.id.layout_content_add_debit);
+
+        inits(view);
+
+
+    }
+
+    private void inits(View view){
+
+        ibDebitSave = (ImageButton) view.findViewById(R.id.ibDebitSave);
+        ibDebitClear = (ImageButton) view.findViewById(R.id.ibDebitClear);
+
+        tvDebitDate = (TextView) view.findViewById(R.id.tvDebitDate);
+
+        spCategory = (Spinner) view.findViewById(R.id.spCategory);
+
+        etDebitDescription = (EditText) view.findViewById(R.id.etDebitDescription);
+        etDebitTotalAmount = (EditText) view.findViewById(R.id.etDebitTotalAmount);
+
+        btnDebitScan = (Button) view.findViewById(R.id.btnDebitScan);
+
+
+        String date = new SimpleDateFormat("MMM dd, yyyy").format(new Date());
+
+        tvDebitDate.setText(date);
+
+        setCategory();
+
+        //Actions
+        ibDebitSave.setOnClickListener(this);
+        ibDebitClear.setOnClickListener(this);
+        btnDebitScan.setOnClickListener(this);
+
+
+    }
+
+    private void setCategory(){
+
+        String[] categorys = getResources().getStringArray(R.array.categorys);
+
+        list = new ArrayList<>(Arrays.asList(categorys));
+
+        // default selected item
+        list.add(0,"Select Category");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_item, list);
+        spCategory.setAdapter(adapter);
+
     }
 
 
+    public void toast(String message){
+
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        int id = v.getId();
+
+        if(id == R.id.btnDebitScan){
+
+            if(spCategory.getSelectedItemPosition() > 0){
+
+                if(hasPermissions())
+                    moveToScan();
+                else
+                    requestPerms();
+
+            } else{
+                spCategory.performClick();
+            }
+
+        } else if(id == R.id.ibDebitSave){
+
+            toast("Save");
+
+        } else if(id == R.id.ibDebitClear){
+            toast("Clear");
+        }
+
+    }
+
+    //Go to scan activity
+
+    private void moveToScan(){
+
+        Intent intent = new Intent(this, ScanActivity.class);
+        intent.putExtra(Constant.CATEGORY_BUNDLE,spCategory.getSelectedItem().toString());
+        startActivity(intent);
+        overridePendingTransition(0,0);
+        finish();
+
+    }
 
 
+    //Get the camera permission on runtime
+
+    private boolean hasPermissions(){
+
+        int res = 0;
+
+        //String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        for(String permission : permissions){
+
+            res = checkCallingOrSelfPermission(permission);
+
+            if(!(res == PackageManager.PERMISSION_GRANTED)){
+                return false;
+            }
+
+        }
+
+        return true;
+    }
+
+    private void requestPerms(){
+
+        //String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+
+            requestPermissions(permissions, PERMS_REQUEST_CODE);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        boolean allowed = true;
+
+        switch (requestCode){
+
+            case PERMS_REQUEST_CODE:
+
+                for (int res : grantResults){
+
+                    // if user granted permissions
+                    allowed = allowed && (res == PackageManager.PERMISSION_GRANTED);
+                }
+
+                break;
+
+            default:
+                // if user not granted permissions
+                allowed = false;
+                break;
+        }
+
+        if(allowed){
+
+            //user granted all permissions we can perform out task
+
+            moveToScan();
+
+        } else{
+            // we will give warning to user that they haven't granted permissions
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if(shouldShowRequestPermissionRationale(permissions[0])){
+
+                    toast("Camera permission denied");
+                }
+
+                if(shouldShowRequestPermissionRationale(permissions[1])){
+
+                    toast("Storage permission denied");
+
+                }
+
+                if(shouldShowRequestPermissionRationale(permissions[2])){
+                    toast("Reader permission denied");
+                }
+
+
+            }
+
+        }
+
+
+    }
 
     /*public DebitFragment() {
         // Required empty public constructor

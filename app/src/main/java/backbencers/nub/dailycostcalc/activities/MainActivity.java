@@ -1,5 +1,3 @@
-
-
 package backbencers.nub.dailycostcalc.activities;
 
 import android.content.Context;
@@ -13,11 +11,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 import backbencers.nub.dailycostcalc.R;
+import backbencers.nub.dailycostcalc.constant.CalendarCollection;
 import backbencers.nub.dailycostcalc.fragments.AboutFragment;
 import backbencers.nub.dailycostcalc.fragments.BalanceFragment;
 import backbencers.nub.dailycostcalc.fragments.CreditFragment;
 import backbencers.nub.dailycostcalc.fragments.DebitFragment;
+import backbencers.nub.dailycostcalc.fragments.HistoryFragment;
 import backbencers.nub.dailycostcalc.fragments.HelpFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -25,7 +27,6 @@ public class MainActivity extends AppCompatActivity
 
     private Context context;
     private FragmentManager manager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        //Add the calendar list
+
+        CalendarCollection.date_collection_arr=new ArrayList<CalendarCollection>();
+        CalendarCollection.date_collection_arr.add(new CalendarCollection("2015-04-01","John Birthday"));
+        CalendarCollection.date_collection_arr.add(new CalendarCollection("2015-04-04","Client Meeting at 5 p.m."));
+        CalendarCollection.date_collection_arr.add(new CalendarCollection("2015-04-06","A Small Party at my office"));
+        CalendarCollection.date_collection_arr.add(new CalendarCollection("2015-05-02","Marriage Anniversary"));
+        CalendarCollection.date_collection_arr.add(new CalendarCollection("2015-04-11","Live Event and Concert of sonu"));
+
 
         // set debit as home fragment
         setFragment(R.id.nav_debit);
@@ -128,7 +139,15 @@ public class MainActivity extends AppCompatActivity
             manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.rlContent,balanceFragment,balanceFragment.getTag()).commit();
 
-        } else if (id == R.id.nav_settings) {
+        } else if (id == R.id.nav_history) {
+
+            HistoryFragment historyFragment = new HistoryFragment();
+//            debitFragment.setContext(context);
+
+            manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.rlContent, historyFragment, historyFragment.getTag()).commit();
+
+            //} else if (id == R.id.nav_settings) {
 
 //            DebitFragment debitFragment = new DebitFragment();
 ////            debitFragment.setContext(context);
