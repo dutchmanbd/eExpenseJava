@@ -61,14 +61,10 @@ public class ScanActivity extends AppCompatActivity {
 
             if(id == R.id.btnScanSave){
                 //sendDataToSave();
-
                 camera.takePicture(null, null, null, mPictureCallback);
-
-
-
-
+                Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show();
+                finish();
             } else if(id == R.id.btnScanCancel){
-
                 moveToMain();
             }
 
