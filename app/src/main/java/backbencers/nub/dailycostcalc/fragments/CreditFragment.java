@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -77,17 +78,6 @@ public class CreditFragment extends Fragment {
         getActivity().setTitle("Credit");
 
         return view = inflater.inflate(R.layout.fragment_credit, container, false);
-
-
-        //readMessages();
-
-        //creditList = expenseDataSource.getAllCredits();
-
-        //CreditListAdapter adapter = new CreditListAdapter(getContext(), creditList);
-
-        //creditListView.setAdapter(adapter);
-
-        //new LoadCreditTask().execute();
     }
 
     @Override
@@ -101,6 +91,13 @@ public class CreditFragment extends Fragment {
             creditEmptyView = (TextView) view.findViewById(R.id.empty_view_credit);
             loadingCreditProgressBar = (ProgressBar) view.findViewById(R.id.pb_loding_credits);
             expenseDataSource = new ExpenseDataSource(getContext());
+
+            FloatingActionButton fabCredit = (FloatingActionButton) view.findViewById(R.id.fab_credit);
+            fabCredit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                }
+            });
 
             creditListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

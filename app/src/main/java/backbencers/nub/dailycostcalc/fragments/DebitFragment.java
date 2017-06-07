@@ -46,8 +46,8 @@ public class DebitFragment extends Fragment {
 
         debitListView.setEmptyView(debitEmptyView);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabDebit = (FloatingActionButton) view.findViewById(R.id.fab_debit);
+        fabDebit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddDebitActivity.class);
