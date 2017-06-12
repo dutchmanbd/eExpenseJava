@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.List;
 
 import backbencers.nub.dailycostcalc.R;
+import backbencers.nub.dailycostcalc.activities.AddCreditActivity;
 import backbencers.nub.dailycostcalc.adapter.CreditListAdapter;
 import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
 import backbencers.nub.dailycostcalc.model.Credit;
@@ -96,6 +97,8 @@ public class CreditFragment extends Fragment {
             fabCredit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent = new Intent(getContext(), AddCreditActivity.class);
+                    startActivity(intent);
                 }
             });
 
