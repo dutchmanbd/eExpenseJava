@@ -5,10 +5,22 @@ import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import backbencers.nub.dailycostcalc.R;
 
 public class AddCreditActivity extends AppCompatActivity {
+
+    private EditText etDate;
+    private ImageButton ibCalendar;
+    private AutoCompleteTextView actvCategory;
+    private EditText etDescription;
+    private EditText etAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,6 +28,22 @@ public class AddCreditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_credit);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initializeViews();
+        setDate();
+    }
+
+    private void initializeViews() {
+        etDate = (EditText) findViewById(R.id.edit_text_date);
+        ibCalendar = (ImageButton) findViewById(R.id.image_button_calendar);
+        actvCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_category);
+        etDescription = (EditText) findViewById(R.id.edit_text_description);
+        etAmount = (EditText) findViewById(R.id.edit_text_amount);
+    }
+
+    private void setDate() {
+        String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
+        etDate.setText(date);
     }
 
     @Override
