@@ -46,35 +46,19 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
-            android:focusable="true"
-            android:focusableInTouchMode="true"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="4dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_category"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="4dp">
-
-                <EditText
-                    android:id="@+id/edit_text_category"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Category"
-                    android:inputType="text"
-                    android:textSize="25sp" />
-            </android.support.design.widget.TextInputLayout>
-
-            <Spinner
-                android:id="@+id/spinner_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical" />
-        </LinearLayout>
+        <AutoCompleteTextView
+            android:id="@+id/auto_complete_category"
+            android:hint="Category"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_description"
