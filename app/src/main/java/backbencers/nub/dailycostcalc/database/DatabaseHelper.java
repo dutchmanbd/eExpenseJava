@@ -17,6 +17,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // query to create credit table in the database
     private static String CREATE_CREDIT_TABLE = "CREATE TABLE " + Constant.TABLE_CREDIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CREDIT_DATE + " TEXT, " + Constant.COL_CREDIT_CATEGORY + " TEXT, " + Constant.COL_CREDIT_DESCRIPTION + " TEXT, " + Constant.COL_CREDIT_AMOUNT + " DOUBLE);";
 
+    // query to create category table
+    private static String CREATE_CATEGORY_TABLE = "CREATE TABLE " + Constant.TABLE_CATEGORY + " ("+ Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CATEGORY_NAME + " TEXT);";
+
     // constructor
     public DatabaseHelper(Context context) {
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);

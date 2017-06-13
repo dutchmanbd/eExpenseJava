@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 import backbencers.nub.dailycostcalc.constant.Constant;
+import backbencers.nub.dailycostcalc.model.Category;
 import backbencers.nub.dailycostcalc.model.Credit;
 import backbencers.nub.dailycostcalc.model.Debit;
 
@@ -60,6 +61,20 @@ public class ExpenseDataSource {
         contentValues.put(Constant.COL_CREDIT_AMOUNT, credit.getCreditAmount());
 
         long inserted = database.insert(Constant.TABLE_CREDIT, null, contentValues);
+
+        this.close();
+
+        return inserted>0 ? true:false;
+    }
+
+    // insert a category to Category table
+    public boolean insertCategory(Category category) {
+        this.open();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constant.COL_CATEGORY_NAME, category.getCategoryName());
+
+        long inserted = database.insert(Constant.TABLE_CATEGORY, null, contentValues);
 
         this.close();
 
@@ -162,8 +177,29 @@ public class ExpenseDataSource {
         return credits;
     }
 
-    // return all debit amounts from a specific date
-    private ArrayList<Double> getCreditAmountsInThisDate(String date) {
+    // return all categories from Category table
+    public ArrayList<Category> getAllCategories() {
+        ArrayList<Category> categories = new ArrayList<>();
+        this.open();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_CATEGORY, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i=0; i<cursor.getCount(); i++) {
+                Category category = createCategory(cursor);
+                categories.add(category);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        database.close();
+
+        return categories;
+    }
+
+    // return all credit amounts from a specific date
+    public ArrayList<Double> getCreditAmountsInThisDate(String date) {
         ArrayList<Double> creditAmounts = new ArrayList<>();
         this.open();
 
@@ -291,5 +327,15 @@ public class ExpenseDataSource {
         Credit credit = new Credit(id, creditDate, creditCategory, creditDescription, creditAmount);
 
         return credit;
+    }
+
+    // Create a category from cursor data
+    private Category createCategory(Cursor cursor) {
+        int id = cursor.getInt(cursor.getColumnIndex(Constant.COL_ID));
+        String categoryName = cursor.getString(cursor.getColumnIndex(Constant.COL_CATEGORY_NAME));
+
+        Category category = new Category(id, categoryName);
+
+        return category;
     }
 }

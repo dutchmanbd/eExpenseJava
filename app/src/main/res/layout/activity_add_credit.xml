@@ -41,7 +41,7 @@
                 android:id="@+id/image_button_calendar"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/calendar"
-                android:background="#ffffff"
+                android:background="#eeeeee"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>

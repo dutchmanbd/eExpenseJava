@@ -10,6 +10,7 @@ public class Constant {
     public static final int DATABASE_VERSION = 1;
     public static final String TABLE_DEBIT = "Debit";
     public static final String TABLE_CREDIT = "Credit";
+    public static final String TABLE_CATEGORY = "Category";
 
     public static final String COL_ID = "Id";
 
@@ -23,6 +24,7 @@ public class Constant {
     public static final String COL_CREDIT_DESCRIPTION = "CreditDescription";
     public static final String COL_CREDIT_AMOUNT = "CreditAmount";
 
+    public static final String COL_CATEGORY_NAME = "CategoryName";
 
 
     // For sharedpreferences
