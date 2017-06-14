@@ -6,34 +6,45 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import backbencers.nub.dailycostcalc.R;
+import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
+import backbencers.nub.dailycostcalc.model.Category;
+import backbencers.nub.dailycostcalc.model.Credit;
 
-public class AddCreditActivity extends AppCompatActivity {
+public class CreditEditorActivity extends AppCompatActivity {
 
     private static EditText etDate;
     private ImageButton ibCalendar;
     private AutoCompleteTextView actvCategory;
     private EditText etDescription;
     private EditText etAmount;
+    private ExpenseDataSource expenseDataSource;
+    ArrayList<String> cat = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_credit);
+        setContentView(R.layout.activity_credit_editor);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        expenseDataSource = new ExpenseDataSource(this);
 
         initializeViews();
         setInitialDate();
@@ -45,6 +56,22 @@ public class AddCreditActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
+
+        ArrayList<String> categories = getCategoriesFromDatabase();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, categories);
+        actvCategory.setAdapter(adapter);
+        actvCategory.setThreshold(1);
+    }
+
+    private ArrayList<String> getCategoriesFromDatabase() {
+        ArrayList<Category> categories = expenseDataSource.getAllCategories();
+
+        for (int i=0; i<categories.size(); i++) {
+            String c = categories.get(i).getCategoryName();
+            cat.add(c);
+        }
+
+        return cat;
     }
 
     private void initializeViews() {
@@ -74,8 +101,53 @@ public class AddCreditActivity extends AppCompatActivity {
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.action_save_credit:
+                saveCredit();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveCredit() {
+        String date = "";
+        String category = "";
+        String description = "";
+        String amount = "";
+
+        if (TextUtils.isEmpty(etDate.getText().toString())) {
+            Toast.makeText(this, "Please enter or select a date!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(actvCategory.getText().toString())) {
+            Toast.makeText(this, "Please enter a category!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(etDescription.getText().toString())) {
+            Toast.makeText(this, "Please enter description!", Toast.LENGTH_SHORT).show();
+        } else if (TextUtils.isEmpty(etAmount.getText().toString())) {
+            Toast.makeText(this, "Please enter amount!", Toast.LENGTH_SHORT).show();
+        } else {
+            date = etDate.getText().toString().trim();
+            category = actvCategory.getText().toString().trim();
+            description = etDescription.getText().toString().trim();
+            amount = etAmount.getText().toString().trim();
+
+            if (!isExistedCategory(category)) {
+                expenseDataSource.insertCategory(new Category(category));
+            }
+
+            Credit credit = new Credit(date, category, description, new Double(amount));
+            boolean inserted = expenseDataSource.insertCredit(credit);
+            if (inserted) {
+                Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();
+                finish();
+            } else {
+                Toast.makeText(this, "Failed to save credit!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private boolean isExistedCategory(String category) {
+        for (String s : cat) {
+            if (s.equalsIgnoreCase(category)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class DatePickerFragment extends DialogFragment

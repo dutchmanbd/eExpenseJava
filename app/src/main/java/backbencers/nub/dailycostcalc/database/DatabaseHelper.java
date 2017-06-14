@@ -29,12 +29,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_DEBIT_TABLE);
         db.execSQL(CREATE_CREDIT_TABLE);
+        db.execSQL(CREATE_CATEGORY_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_DEBIT);
         db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_CREDIT);
+        db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_CATEGORY);
         onCreate(db);
     }
 
