@@ -23,6 +23,7 @@ public class Constant {
     public static final String COL_CREDIT_CATEGORY = "CreditCategory";
     public static final String COL_CREDIT_DESCRIPTION = "CreditDescription";
     public static final String COL_CREDIT_AMOUNT = "CreditAmount";
+    public static final String COL_CREDIT_TIMESTAMP = "CreditTimestamp";
 
     public static final String COL_CATEGORY_NAME = "CategoryName";
 

@@ -11,25 +11,28 @@ public class Credit {
     private String creditCategory;
     private String creditDescription;
     private Double creditAmount;
+    private int creditTimestamp;
 
     public Credit() {
     }
 
     // Constructor without creditId
-    public Credit(String creditDate, String creditCategory, String creditDescription, Double creditAmount) {
+    public Credit(String creditDate, String creditCategory, String creditDescription, Double creditAmount, int creditTimestamp) {
         this.creditDate = creditDate;
         this.creditCategory = creditCategory;
         this.creditDescription = creditDescription;
         this.creditAmount = creditAmount;
+        this.creditTimestamp = creditTimestamp;
     }
 
     // Constructor with creditId
-    public Credit(int creditId, String creditDate, String creditCategory, String creditDescription, Double creditAmount) {
+    public Credit(int creditId, String creditDate, String creditCategory, String creditDescription, Double creditAmount, int creditTimestamp) {
         this.creditId = creditId;
         this.creditDate = creditDate;
         this.creditCategory = creditCategory;
         this.creditDescription = creditDescription;
         this.creditAmount = creditAmount;
+        this.creditTimestamp = creditTimestamp;
     }
 
     public int getCreditId() {
@@ -70,5 +73,13 @@ public class Credit {
 
     public void setCreditAmount(Double creditAmount) {
         this.creditAmount = creditAmount;
+    }
+
+    public int getCreditTimestamp() {
+        return creditTimestamp;
+    }
+
+    public void setCreditTimestamp(int creditTimestamp) {
+        this.creditTimestamp = creditTimestamp;
     }
 }

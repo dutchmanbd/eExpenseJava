@@ -59,6 +59,7 @@ public class ExpenseDataSource {
         contentValues.put(Constant.COL_CREDIT_CATEGORY, credit.getCreditCategory());
         contentValues.put(Constant.COL_CREDIT_DESCRIPTION, credit.getCreditDescription());
         contentValues.put(Constant.COL_CREDIT_AMOUNT, credit.getCreditAmount());
+        contentValues.put(Constant.COL_CREDIT_TIMESTAMP, credit.getCreditTimestamp());
 
         long inserted = database.insert(Constant.TABLE_CREDIT, null, contentValues);
 
@@ -246,6 +247,7 @@ public class ExpenseDataSource {
         contentValues.put(Constant.COL_CREDIT_CATEGORY, credit.getCreditCategory());
         contentValues.put(Constant.COL_CREDIT_DESCRIPTION, credit.getCreditDescription());
         contentValues.put(Constant.COL_CREDIT_AMOUNT, credit.getCreditAmount());
+        contentValues.put(Constant.COL_CREDIT_TIMESTAMP, credit.getCreditTimestamp());
 
         int updated = database.update(Constant.TABLE_CREDIT, contentValues,
                 Constant.COL_ID + " = " + id, null);
@@ -323,8 +325,9 @@ public class ExpenseDataSource {
         String creditCategory = cursor.getString(cursor.getColumnIndex(Constant.COL_CREDIT_CATEGORY));
         String creditDescription = cursor.getString(cursor.getColumnIndex(Constant.COL_CREDIT_DESCRIPTION));
         Double creditAmount = cursor.getDouble(cursor.getColumnIndex(Constant.COL_CREDIT_AMOUNT));
+        int creditTimestamp = cursor.getInt(cursor.getColumnIndex(Constant.COL_CREDIT_TIMESTAMP));
 
-        Credit credit = new Credit(id, creditDate, creditCategory, creditDescription, creditAmount);
+        Credit credit = new Credit(id, creditDate, creditCategory, creditDescription, creditAmount, creditTimestamp);
 
         return credit;
     }

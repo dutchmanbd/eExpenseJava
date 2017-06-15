@@ -7,6 +7,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,8 @@ import backbencers.nub.dailycostcalc.model.Category;
 import backbencers.nub.dailycostcalc.model.Credit;
 
 public class CreditEditorActivity extends AppCompatActivity {
+
+    private String TAG = CreditEditorActivity.class.getSimpleName();
 
     private static EditText etDate;
     private ImageButton ibCalendar;
@@ -130,7 +133,9 @@ public class CreditEditorActivity extends AppCompatActivity {
                 expenseDataSource.insertCategory(new Category(category));
             }
 
-            Credit credit = new Credit(date, category, description, new Double(amount));
+            Credit credit = new Credit(date, category, description, new Double(amount), (int) (System.currentTimeMillis()%100000000));
+            Log.e(TAG, "system currentTimeMillis: " + System.currentTimeMillis()%100000000);
+
             boolean inserted = expenseDataSource.insertCredit(credit);
             if (inserted) {
                 Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();

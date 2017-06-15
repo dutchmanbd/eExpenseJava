@@ -222,11 +222,9 @@ public class CreditFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
-
 
         if (sentToSettings) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -257,7 +255,11 @@ public class CreditFragment extends Fragment {
     private void loadCredits() {
         loadingCreditProgressBar.setVisibility(View.VISIBLE);
         creditListView.setAdapter(new CreditListAdapter(getContext(), new ArrayList<Credit>()));
-        expenseDataSource.deleteAllCredits();
+        //expenseDataSource.deleteAllCredits();
+
+        Timestamp timestamp;
+        Date date;
+        int intTimestamp;
 
         Credit credit = new Credit();
         credit.setCreditCategory("Bank");
@@ -269,17 +271,18 @@ public class CreditFragment extends Fragment {
                 String msgData = "";
                 for (int idx = 0; idx < creditCursor.getColumnCount(); idx++) {
                     //msgData += " " + cursor.getColumnName(idx) + " : " + cursor.getString(idx) + "\n";
-                    Timestamp timestamp;
-                    Date date;
 
                     if (creditCursor.getColumnName(idx).equals("date")) {
                         timestamp = new Timestamp(creditCursor.getLong(idx));
+                        intTimestamp = (int) (timestamp.getTime()%100000000);
+                        Log.e(TAG, "message longTimestamp: " + intTimestamp);
                         date = new Date(timestamp.getTime());
                         String fullDateString = date.toString();
                         String monthDateString = fullDateString.substring(4, 10);
                         String yearString = fullDateString.substring(30, 34);
                         String dateString = monthDateString + ", " + yearString;
                         credit.setCreditDate(dateString);
+                        credit.setCreditTimestamp(intTimestamp);
                         //Log.i(CreditFragment.class.getSimpleName(), "Date: " + dateString);
                     }
 
@@ -292,10 +295,11 @@ public class CreditFragment extends Fragment {
                             Log.i(TAG, creditCursor.getString(idx));
 
                             credit.setCreditDescription(messageBodyNormal);
-
                             credit.setCreditAmount(findCreditAmountFromMessageBody(messageBodyLowerCase));
 
-                            expenseDataSource.insertCredit(credit);
+                            if (!isCreditExisted(credit.getCreditTimestamp())) {
+                                expenseDataSource.insertCredit(credit);
+                            }
                         }
                     }
 
@@ -335,6 +339,18 @@ public class CreditFragment extends Fragment {
             adapter = new CreditListAdapter(getContext(), creditList);
             creditListView.setAdapter(adapter);
         }
+    }
+
+    private boolean isCreditExisted(int creditTimestamp) {
+        ArrayList<Credit> credits = expenseDataSource.getAllCredits();
+
+        for (Credit c : credits) {
+            if (c.getCreditTimestamp() == creditTimestamp) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private Double findCreditAmountFromMessageBody(String messageBody) {

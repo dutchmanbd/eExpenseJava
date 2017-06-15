@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static String CREATE_DEBIT_TABLE = "CREATE TABLE " + Constant.TABLE_DEBIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_DEBIT_DATE + " TEXT, " + Constant.COL_DEBIT_CATEGORY + " TEXT, " + Constant.COL_DEBIT_DESCRIPTION + " TEXT, " + Constant.COL_DEBIT_AMOUNT + " DOUBLE);";
 
     // query to create credit table in the database
-    private static String CREATE_CREDIT_TABLE = "CREATE TABLE " + Constant.TABLE_CREDIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CREDIT_DATE + " TEXT, " + Constant.COL_CREDIT_CATEGORY + " TEXT, " + Constant.COL_CREDIT_DESCRIPTION + " TEXT, " + Constant.COL_CREDIT_AMOUNT + " DOUBLE);";
+    private static String CREATE_CREDIT_TABLE = "CREATE TABLE " + Constant.TABLE_CREDIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CREDIT_DATE + " TEXT, " + Constant.COL_CREDIT_CATEGORY + " TEXT, " + Constant.COL_CREDIT_DESCRIPTION + " TEXT, " + Constant.COL_CREDIT_AMOUNT + " DOUBLE, " + Constant.COL_CREDIT_TIMESTAMP + " INTEGER);";
 
     // query to create category table
     private static String CREATE_CATEGORY_TABLE = "CREATE TABLE " + Constant.TABLE_CATEGORY + " ("+ Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CATEGORY_NAME + " TEXT);";
