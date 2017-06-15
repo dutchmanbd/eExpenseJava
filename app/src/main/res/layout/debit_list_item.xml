@@ -6,7 +6,7 @@
     android:background="#dddddd" >
 
     <View
-        android:id="@+id/shadowView"
+        android:id="@+id/shadowViewDebit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="3dp"
@@ -16,7 +16,7 @@
         android:background="#cccccc" />
 
     <RelativeLayout
-        android:id="@+id/innerContainer"
+        android:id="@+id/innerContainerDebit"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"

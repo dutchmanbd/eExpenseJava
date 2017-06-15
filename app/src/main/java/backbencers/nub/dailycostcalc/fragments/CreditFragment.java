@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -232,6 +233,8 @@ public class CreditFragment extends Fragment {
                 loadCredits();
             }
         }
+
+        loadCredits();
     }
 
     private void showCreditDetailInDialog(int position) {
@@ -277,10 +280,14 @@ public class CreditFragment extends Fragment {
                         intTimestamp = (int) (timestamp.getTime()%100000000);
                         Log.e(TAG, "message longTimestamp: " + intTimestamp);
                         date = new Date(timestamp.getTime());
-                        String fullDateString = date.toString();
+
+                        String dateString = new SimpleDateFormat("dd-MM-yyyy").format(timestamp);
+
+                        /*String fullDateString = date.toString();
                         String monthDateString = fullDateString.substring(4, 10);
                         String yearString = fullDateString.substring(30, 34);
-                        String dateString = monthDateString + ", " + yearString;
+                        String dateString = monthDateString + ", " + yearString;*/
+
                         credit.setCreditDate(dateString);
                         credit.setCreditTimestamp(intTimestamp);
                         //Log.i(CreditFragment.class.getSimpleName(), "Date: " + dateString);

@@ -36,8 +36,12 @@ public class CreditListAdapter extends ArrayAdapter<Credit> {
 
         Credit currentCredit = getItem(position);
 
+        TextView creditCategoryTextView = (TextView) listItemView.findViewById(R.id.tv_credit_category);
+        creditCategoryTextView.setText(currentCredit.getCreditCategory());
+
         TextView creditDateTextView = (TextView) listItemView.findViewById(R.id.tv_credit_date);
         creditDateTextView.setText(currentCredit.getCreditDate());
+
         Log.e(CreditListAdapter.class.getSimpleName(), "Date: " + currentCredit.getCreditDate());
         //creditDateTextView.setText("Kaj hoy na kere!");
 
