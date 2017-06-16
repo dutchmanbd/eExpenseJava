@@ -3,7 +3,7 @@
   -->
 
 <resources>
-    <string name="app_name">Daily Cost Calc</string>
+    <string name="app_name">eExpense</string>
     <string name="add_credit">Add Credit</string>
     <string name="add_debit">Add Debit</string>
 
