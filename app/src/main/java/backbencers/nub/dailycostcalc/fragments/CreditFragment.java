@@ -35,6 +35,7 @@ import java.util.List;
 import backbencers.nub.dailycostcalc.R;
 import backbencers.nub.dailycostcalc.activities.CreditEditorActivity;
 import backbencers.nub.dailycostcalc.adapter.CreditListAdapter;
+import backbencers.nub.dailycostcalc.constant.Constant;
 import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
 import backbencers.nub.dailycostcalc.model.Credit;
 
@@ -47,6 +48,7 @@ public class CreditFragment extends Fragment {
 
     private static final int PERMISSION_CALLBACK_CONSTANT = 101;
     private static final int REQUEST_PERMISSION_SETTING = 102;
+    private static final int OPEN_CREDIT_EDITOR_ACTIVITY = 103;
 
     private List<Credit> creditList;
     private ExpenseDataSource expenseDataSource;
@@ -58,6 +60,7 @@ public class CreditFragment extends Fragment {
 
     private SharedPreferences permissionStatus;
     private boolean sentToSettings = false;
+    private boolean sentToCreditEditor = false;
 
     // stopped here
     // http://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
@@ -98,15 +101,23 @@ public class CreditFragment extends Fragment {
             fabCredit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    sentToCreditEditor = true;
                     Intent intent = new Intent(getContext(), CreditEditorActivity.class);
-                    startActivity(intent);
+                    intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_ADD);
+                    startActivityForResult(intent, OPEN_CREDIT_EDITOR_ACTIVITY);
                 }
             });
 
             creditListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    showCreditDetailInDialog(position);
+                    //showCreditDetailInDialog(position);
+                    sentToCreditEditor = true;
+                    Intent intent = new Intent(getContext(), CreditEditorActivity.class);
+                    intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_EDIT);
+                    intent.putExtra(Constant.CREDIT_ITEM_ID, ((int) id)+1);
+                    Log.e(TAG, "Clicked item id: " + id);
+                    startActivityForResult(intent, OPEN_CREDIT_EDITOR_ACTIVITY);
                 }
             });
 
@@ -221,6 +232,8 @@ public class CreditFragment extends Fragment {
                 //Got Permission
                 loadCredits();
             }
+        } else if (requestCode == OPEN_CREDIT_EDITOR_ACTIVITY) {
+            loadCredits();
         }
     }
 
@@ -235,7 +248,10 @@ public class CreditFragment extends Fragment {
             }
         }
 
-        //loadCredits();
+        if (sentToCreditEditor) {
+            sentToCreditEditor = false;
+            loadCredits();
+        }
     }
 
     private void showCreditDetailInDialog(int position) {
@@ -344,6 +360,7 @@ public class CreditFragment extends Fragment {
         if (creditList.size() == 0) {
             creditEmptyView.setVisibility(View.VISIBLE);
         } else {
+            Log.e(TAG, "creditList size: " + creditList.size());
             adapter = new CreditListAdapter(getContext(), creditList);
             creditListView.setAdapter(adapter);
         }

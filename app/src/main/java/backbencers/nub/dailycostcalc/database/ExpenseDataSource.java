@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 
 import backbencers.nub.dailycostcalc.constant.Constant;
@@ -104,7 +105,7 @@ public class ExpenseDataSource {
 
         Cursor cursor = database.query(Constant.TABLE_CREDIT, new String[] {Constant.COL_ID,
                 Constant.COL_CREDIT_DATE, Constant.COL_CREDIT_CATEGORY, Constant.COL_CREDIT_DESCRIPTION,
-                Constant.COL_CREDIT_AMOUNT}, Constant.COL_ID + " = " + id, null, null, null, null);
+                Constant.COL_CREDIT_AMOUNT, Constant.COL_CREDIT_TIMESTAMP}, Constant.COL_ID + " = " + id, null, null, null, null);
 
         cursor.moveToFirst();
         Credit credit = createCredit(cursor);

@@ -27,6 +27,10 @@ public class Constant {
 
     public static final String COL_CATEGORY_NAME = "CategoryName";
 
+    public static final String ACTIVITY_TYPE = "ActivityType";
+    public static final String ACTIVITY_TYPE_ADD = "ActivityTypeAdd";
+    public static final String ACTIVITY_TYPE_EDIT = "ActivityTypeEdit";
+    public static final String CREDIT_ITEM_ID = "CreditItemPosition";
 
     // For sharedpreferences
 

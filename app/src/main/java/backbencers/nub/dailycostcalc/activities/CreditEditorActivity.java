@@ -2,6 +2,7 @@ package backbencers.nub.dailycostcalc.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NavUtils;
@@ -24,6 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import backbencers.nub.dailycostcalc.R;
+import backbencers.nub.dailycostcalc.constant.Constant;
 import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
 import backbencers.nub.dailycostcalc.model.Category;
 import backbencers.nub.dailycostcalc.model.Credit;
@@ -32,13 +34,14 @@ public class CreditEditorActivity extends AppCompatActivity {
 
     private String TAG = CreditEditorActivity.class.getSimpleName();
 
-    private static EditText etDate;
+    private static EditText etCreditDate;
     private ImageButton ibCalendar;
-    private AutoCompleteTextView actvCategory;
-    private EditText etDescription;
-    private EditText etAmount;
+    private AutoCompleteTextView actvCreditCategory;
+    private EditText etCreditDescription;
+    private EditText etCreditAmount;
     private ExpenseDataSource expenseDataSource;
-    ArrayList<String> cat = new ArrayList<>();
+    private ArrayList<String> cat = new ArrayList<>();
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,12 +49,8 @@ public class CreditEditorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_credit_editor);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         expenseDataSource = new ExpenseDataSource(this);
-
         initializeViews();
-        setInitialDate();
-
         ibCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,11 +58,31 @@ public class CreditEditorActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
-
         ArrayList<String> categories = getCategoriesFromDatabase();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, categories);
-        actvCategory.setAdapter(adapter);
-        actvCategory.setThreshold(1);
+        actvCreditCategory.setAdapter(adapter);
+        actvCreditCategory.setThreshold(1);
+        intent = getIntent();
+        String activityType = intent.getStringExtra(Constant.ACTIVITY_TYPE);
+        Log.e(TAG, "Activity type: " + activityType);
+
+        if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
+            setTitle("Add Credit");
+            setInitialDate();
+        } else if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
+            setTitle("Edit Credit");
+            int id = intent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
+            Log.e(TAG, "credit list item position: " + id);
+            if (id > -1) {
+                Credit credit = expenseDataSource.getCredit(id);
+                etCreditDate.setText(credit.getCreditDate());
+                actvCreditCategory.setText(credit.getCreditCategory());
+                etCreditDescription.setText(credit.getCreditDescription());
+                etCreditAmount.setText("" + credit.getCreditAmount());
+            } else {
+                Toast.makeText(this, "Error loading credit!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     private ArrayList<String> getCategoriesFromDatabase() {
@@ -78,16 +97,16 @@ public class CreditEditorActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        etDate = (EditText) findViewById(R.id.edit_text_date);
+        etCreditDate = (EditText) findViewById(R.id.edit_text_date);
         ibCalendar = (ImageButton) findViewById(R.id.image_button_calendar);
-        actvCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_category);
-        etDescription = (EditText) findViewById(R.id.edit_text_description);
-        etAmount = (EditText) findViewById(R.id.edit_text_amount);
+        actvCreditCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_category);
+        etCreditDescription = (EditText) findViewById(R.id.edit_text_description);
+        etCreditAmount = (EditText) findViewById(R.id.edit_text_amount);
     }
 
     private void setInitialDate() {
         String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        etDate.setText(date);
+        etCreditDate.setText(date);
     }
 
     @Override
@@ -115,19 +134,19 @@ public class CreditEditorActivity extends AppCompatActivity {
         String description = "";
         String amount = "";
 
-        if (TextUtils.isEmpty(etDate.getText().toString())) {
+        if (TextUtils.isEmpty(etCreditDate.getText().toString())) {
             Toast.makeText(this, "Please enter or select a date!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(actvCategory.getText().toString())) {
+        } else if (TextUtils.isEmpty(actvCreditCategory.getText().toString())) {
             Toast.makeText(this, "Please enter a category!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(etDescription.getText().toString())) {
+        } else if (TextUtils.isEmpty(etCreditDescription.getText().toString())) {
             Toast.makeText(this, "Please enter description!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(etAmount.getText().toString())) {
+        } else if (TextUtils.isEmpty(etCreditAmount.getText().toString())) {
             Toast.makeText(this, "Please enter amount!", Toast.LENGTH_SHORT).show();
         } else {
-            date = etDate.getText().toString().trim();
-            category = actvCategory.getText().toString().trim();
-            description = etDescription.getText().toString().trim();
-            amount = etAmount.getText().toString().trim();
+            date = etCreditDate.getText().toString().trim();
+            category = actvCreditCategory.getText().toString().trim();
+            description = etCreditDescription.getText().toString().trim();
+            amount = etCreditAmount.getText().toString().trim();
 
             if (!isExistedCategory(category)) {
                 expenseDataSource.insertCategory(new Category(category));
@@ -176,8 +195,8 @@ public class CreditEditorActivity extends AppCompatActivity {
             String finalDay = day > 9 ? (""+day) : ("0"+day);
             String finalMonth = month > 9 ? (""+month) : ("0"+month);
             String finalYear = ""+year;
-            etDate.setText("");
-            etDate.setText(finalDay + "-" + finalMonth + "-" + finalYear);
+            etCreditDate.setText("");
+            etCreditDate.setText(finalDay + "-" + finalMonth + "-" + finalYear);
         }
     }
 }
