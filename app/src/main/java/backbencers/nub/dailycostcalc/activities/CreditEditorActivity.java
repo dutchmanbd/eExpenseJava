@@ -42,6 +42,8 @@ public class CreditEditorActivity extends AppCompatActivity {
     private ExpenseDataSource expenseDataSource;
     private ArrayList<String> cat = new ArrayList<>();
     private Intent intent;
+    private String activityType;
+    private int creditId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +65,19 @@ public class CreditEditorActivity extends AppCompatActivity {
         actvCreditCategory.setAdapter(adapter);
         actvCreditCategory.setThreshold(1);
         intent = getIntent();
-        String activityType = intent.getStringExtra(Constant.ACTIVITY_TYPE);
+        activityType = intent.getStringExtra(Constant.ACTIVITY_TYPE);
         Log.e(TAG, "Activity type: " + activityType);
 
         if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
             setTitle("Add Credit");
+            invalidateOptionsMenu();
             setInitialDate();
         } else if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
             setTitle("Edit Credit");
-            int id = intent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
-            Log.e(TAG, "credit list item position: " + id);
-            if (id > -1) {
-                Credit credit = expenseDataSource.getCredit(id);
+            creditId = intent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
+            Log.e(TAG, "credit list item position: " + creditId);
+            if (creditId > -1) {
+                Credit credit = expenseDataSource.getCredit(creditId);
                 etCreditDate.setText(credit.getCreditDate());
                 actvCreditCategory.setText(credit.getCreditCategory());
                 etCreditDescription.setText(credit.getCreditDescription());
@@ -88,7 +91,7 @@ public class CreditEditorActivity extends AppCompatActivity {
     private ArrayList<String> getCategoriesFromDatabase() {
         ArrayList<Category> categories = expenseDataSource.getAllCategories();
 
-        for (int i=0; i<categories.size(); i++) {
+        for (int i = 0; i < categories.size(); i++) {
             String c = categories.get(i).getCategoryName();
             cat.add(c);
         }
@@ -129,38 +132,44 @@ public class CreditEditorActivity extends AppCompatActivity {
     }
 
     private void saveCredit() {
-        String date = "";
-        String category = "";
-        String description = "";
-        String amount = "";
+        String date = etCreditDate.getText().toString().trim();
+        String category = actvCreditCategory.getText().toString().trim();
+        String description = etCreditDescription.getText().toString().trim();
+        String amount = etCreditAmount.getText().toString().trim();
 
-        if (TextUtils.isEmpty(etCreditDate.getText().toString())) {
+        if (TextUtils.isEmpty(date)) {
             Toast.makeText(this, "Please enter or select a date!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(actvCreditCategory.getText().toString())) {
+        } else if (TextUtils.isEmpty(category)) {
             Toast.makeText(this, "Please enter a category!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(etCreditDescription.getText().toString())) {
+        } else if (TextUtils.isEmpty(description)) {
             Toast.makeText(this, "Please enter description!", Toast.LENGTH_SHORT).show();
-        } else if (TextUtils.isEmpty(etCreditAmount.getText().toString())) {
+        } else if (TextUtils.isEmpty(amount)) {
             Toast.makeText(this, "Please enter amount!", Toast.LENGTH_SHORT).show();
         } else {
-            date = etCreditDate.getText().toString().trim();
-            category = actvCreditCategory.getText().toString().trim();
-            description = etCreditDescription.getText().toString().trim();
-            amount = etCreditAmount.getText().toString().trim();
 
             if (!isExistedCategory(category)) {
                 expenseDataSource.insertCategory(new Category(category));
             }
 
-            Credit credit = new Credit(date, category, description, new Double(amount), (int) (System.currentTimeMillis()%100000000));
-            Log.e(TAG, "system currentTimeMillis: " + System.currentTimeMillis()%100000000);
+            Credit credit = new Credit(date, category, description, new Double(amount), (int) (System.currentTimeMillis() % 100000000));
+            Log.e(TAG, "system currentTimeMillis: " + System.currentTimeMillis() % 100000000);
 
-            boolean inserted = expenseDataSource.insertCredit(credit);
-            if (inserted) {
-                Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(this, "Failed to save credit!", Toast.LENGTH_SHORT).show();
+            if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
+                boolean inserted = expenseDataSource.insertCredit(credit);
+                if (inserted) {
+                    Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "Failed to save credit!", Toast.LENGTH_SHORT).show();
+                }
+            } else if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
+                boolean updated = expenseDataSource.updateCredit(creditId, credit);
+                if (updated) {
+                    Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "Failed to save credit!", Toast.LENGTH_SHORT).show();
+                }
             }
         }
     }
@@ -192,9 +201,9 @@ public class CreditEditorActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             month += 1;
-            String finalDay = day > 9 ? (""+day) : ("0"+day);
-            String finalMonth = month > 9 ? (""+month) : ("0"+month);
-            String finalYear = ""+year;
+            String finalDay = day > 9 ? ("" + day) : ("0" + day);
+            String finalMonth = month > 9 ? ("" + month) : ("0" + month);
+            String finalYear = "" + year;
             etCreditDate.setText("");
             etCreditDate.setText(finalDay + "-" + finalMonth + "-" + finalYear);
         }
