@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Date"
                 android:inputType="text|date"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
         </android.support.design.widget.TextInputLayout>
 
             <ImageButton
@@ -55,9 +55,24 @@
         <AutoCompleteTextView
             android:id="@+id/auto_complete_category"
             android:hint="Category"
-            android:textSize="25sp"
+            android:textSize="22sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="4dp">
+
+            <EditText
+                android:id="@+id/edit_text_amount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Amount"
+                android:inputType="numberDecimal"
+                android:textSize="22sp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -73,22 +88,7 @@
                 android:gravity="start"
                 android:hint="Description"
                 android:inputType="textMultiLine"
-                android:textSize="25sp" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_amount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="4dp">
-
-            <EditText
-                android:id="@+id/edit_text_amount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Amount"
-                android:inputType="numberDecimal"
-                android:textSize="25sp" />
+                android:textSize="22sp" />
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>

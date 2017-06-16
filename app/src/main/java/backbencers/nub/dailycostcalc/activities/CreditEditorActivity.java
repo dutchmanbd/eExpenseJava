@@ -131,7 +131,22 @@ public class CreditEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_add_credit, menu);
+        getMenuInflater().inflate(R.menu.menu_credit_editor, menu);
+        return true;
+    }
+
+    /**
+     * This method is called after invalidateOptionsMenu(), so that the
+     * menu can be updated (some menu items can be hidden or made visible).
+     */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new credit, hide the "Delete" menu item.
+        if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete_credit);
+            menuItem.setVisible(false);
+        }
         return true;
     }
 
@@ -162,11 +177,68 @@ public class CreditEditorActivity extends AppCompatActivity {
                 // Show a dialog that notifies the user they have unsaved changes
                 showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
+
             case R.id.action_save_credit:
                 saveCredit();
                 return true;
+
+            // Respond to a click on the "Delete" menu option
+            case R.id.action_delete_credit:
+                // Pop up confirmation dialog for deletion
+                //showDeleteConfirmationDialog();
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showDeleteConfirmationDialog() {
+        // Create an AlertDialog.Builder and set the message, and click listeners
+        // for the postivie and negative buttons on the dialog.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Delete" button, so delete the pet.
+                deletePet();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked the "Cancel" button, so dismiss the dialog
+                // and continue editing the pet.
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        // Create and show the AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    /**
+     * Perform the deletion of the pet in the database.
+     */
+    private void deletePet() {
+        // Only perform the delete if this is an existing pet.
+        if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
+            boolean deleted = expenseDataSource.deleteCredit(creditId);
+
+            // Show a toast message depending on whether or not the delete was successful.
+            if (deleted) {
+                // If no rows were deleted, then there was an error with the delete.
+                Toast.makeText(this, getString(R.string.editor_delete_credit_successful),
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                // Otherwise, the delete was successful and we can display a toast.
+                Toast.makeText(this, getString(R.string.editor_delete_credit_failed),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        // Close the activity
+        finish();
     }
 
     @Override

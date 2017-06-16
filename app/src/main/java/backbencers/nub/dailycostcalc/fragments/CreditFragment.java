@@ -112,10 +112,12 @@ public class CreditFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     //showCreditDetailInDialog(position);
+                    Log.e("CrditFragment", "----------------------position: " + position + " id: " + id);
+
                     sentToCreditEditor = true;
                     Intent intent = new Intent(getContext(), CreditEditorActivity.class);
                     intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_EDIT);
-                    intent.putExtra(Constant.CREDIT_ITEM_ID, ((int) id)+1);
+                    intent.putExtra(Constant.CREDIT_ITEM_ID, position+1);
                     Log.e(TAG, "Clicked item id: " + id);
                     startActivityForResult(intent, OPEN_CREDIT_EDITOR_ACTIVITY);
                 }

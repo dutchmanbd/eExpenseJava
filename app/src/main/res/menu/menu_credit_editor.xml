@@ -9,4 +9,9 @@
         android:icon="@drawable/ic_check"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/action_delete_credit"
+        android:title="@string/action_delete_credit"
+        app:showAsAction="never" />
+
 </menu>
