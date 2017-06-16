@@ -162,6 +162,7 @@ public class CreditFragment extends Fragment {
 
                 SharedPreferences.Editor editor = permissionStatus.edit();
                 editor.putBoolean(Manifest.permission.READ_PHONE_STATE, true);
+                editor.putBoolean(Manifest.permission.READ_SMS, true);
                 editor.commit();
             } else {
                 //You already have the permission, just go ahead.
@@ -234,7 +235,7 @@ public class CreditFragment extends Fragment {
             }
         }
 
-        loadCredits();
+        //loadCredits();
     }
 
     private void showCreditDetailInDialog(int position) {
