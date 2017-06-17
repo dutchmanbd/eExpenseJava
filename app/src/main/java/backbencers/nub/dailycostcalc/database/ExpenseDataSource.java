@@ -317,7 +317,7 @@ public class ExpenseDataSource {
     }
 
     // return total amount of debits
-    private double getTotalDebitAmount() {
+    public double getTotalDebitAmount() {
         this.open();
         Cursor c = database.rawQuery("SELECT SUM("+Constant.COL_DEBIT_AMOUNT+") FROM " + Constant.TABLE_DEBIT, null);
         c.moveToFirst();
@@ -327,7 +327,7 @@ public class ExpenseDataSource {
     }
 
     // return total amount of credits
-    private double getTotalCreditAmount() {
+    public double getTotalCreditAmount() {
         this.open();
         Cursor c = database.rawQuery("SELECT SUM("+Constant.COL_CREDIT_AMOUNT+") FROM " + Constant.TABLE_CREDIT, null);
         c.moveToFirst();

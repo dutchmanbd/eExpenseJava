@@ -58,6 +58,7 @@ public class CreditFragment extends Fragment {
     private ListView creditListView;
     private TextView creditEmptyView;
     private View view;
+    private TextView tvFooterAmount;
 
     private SharedPreferences permissionStatus;
     private boolean sentToSettings = false;
@@ -97,6 +98,9 @@ public class CreditFragment extends Fragment {
             creditListView = (ListView) view.findViewById(R.id.lv_credits);
             creditEmptyView = (TextView) view.findViewById(R.id.empty_view_credit);
             loadingCreditProgressBar = (ProgressBar) view.findViewById(R.id.pb_loding_credits);
+            //Log.e(TAG, "footer amount text view initialized");
+            tvFooterAmount = (TextView) view.findViewById(R.id.text_view_amount);
+
             expenseDataSource = new ExpenseDataSource(getContext());
 
             FloatingActionButton fabCredit = (FloatingActionButton) view.findViewById(R.id.fab_credit);
@@ -244,6 +248,8 @@ public class CreditFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        Log.e(TAG, "onResume");
 
         if (sentToSettings) {
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
@@ -393,6 +399,7 @@ public class CreditFragment extends Fragment {
             Log.e(TAG, "creditList size: " + creditList.size());
             adapter = new CreditListAdapter(getContext(), creditList);
             creditListView.setAdapter(adapter);
+            tvFooterAmount.setText("" + expenseDataSource.getTotalCreditAmount());
         }
     }
 
