@@ -185,7 +185,7 @@ public class CreditEditorActivity extends AppCompatActivity {
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete_credit:
                 // Pop up confirmation dialog for deletion
-                //showDeleteConfirmationDialog();
+                showDeleteConfirmationDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);

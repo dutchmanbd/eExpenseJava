@@ -117,7 +117,7 @@ public class CreditFragment extends Fragment {
                     sentToCreditEditor = true;
                     Intent intent = new Intent(getContext(), CreditEditorActivity.class);
                     intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_EDIT);
-                    intent.putExtra(Constant.CREDIT_ITEM_ID, position+1);
+                    intent.putExtra(Constant.CREDIT_ITEM_ID, creditList.get(position).getCreditId());
                     Log.e(TAG, "Clicked item id: " + id);
                     startActivityForResult(intent, OPEN_CREDIT_EDITOR_ACTIVITY);
                 }
