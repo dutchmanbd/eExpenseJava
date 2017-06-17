@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import backbencers.nub.dailycostcalc.R;
-import backbencers.nub.dailycostcalc.activities.AddDebitActivity;
+import backbencers.nub.dailycostcalc.activities.DebitEditorActivity;
 import backbencers.nub.dailycostcalc.adapter.DebitListAdapter;
 import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
 import backbencers.nub.dailycostcalc.model.Debit;
@@ -50,7 +50,7 @@ public class DebitFragment extends Fragment {
         fabDebit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddDebitActivity.class);
+                Intent intent = new Intent(getContext(), DebitEditorActivity.class);
                 startActivity(intent);
             }
         });

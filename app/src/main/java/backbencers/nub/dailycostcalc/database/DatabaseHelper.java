@@ -17,6 +17,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     // query to create credit table in the database
     private static String CREATE_CREDIT_TABLE = "CREATE TABLE " + Constant.TABLE_CREDIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CREDIT_DATE + " TEXT, " + Constant.COL_CREDIT_CATEGORY + " TEXT, " + Constant.COL_CREDIT_DESCRIPTION + " TEXT, " + Constant.COL_CREDIT_AMOUNT + " DOUBLE, " + Constant.COL_CREDIT_TIMESTAMP + " INTEGER);";
 
+    // query to create deleted credit table in the database
+    private static String CREATE_DELETED_CREDIT_TABLE = "CREATE TABLE " + Constant.TABLE_DELETED_CREDIT + " (" + Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CREDIT_DATE + " TEXT, " + Constant.COL_CREDIT_CATEGORY + " TEXT, " + Constant.COL_CREDIT_DESCRIPTION + " TEXT, " + Constant.COL_CREDIT_AMOUNT + " DOUBLE, " + Constant.COL_CREDIT_TIMESTAMP + " INTEGER);";
+
     // query to create category table
     private static String CREATE_CATEGORY_TABLE = "CREATE TABLE " + Constant.TABLE_CATEGORY + " ("+ Constant.COL_ID + " INTEGER PRIMARY KEY, " + Constant.COL_CATEGORY_NAME + " TEXT);";
 
@@ -30,6 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DEBIT_TABLE);
         db.execSQL(CREATE_CREDIT_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
+        db.execSQL(CREATE_DELETED_CREDIT_TABLE);
     }
 
     @Override
@@ -37,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_DEBIT);
         db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_CREDIT);
         db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_CATEGORY);
+        db.execSQL("DROP TABLE IF EXISTS " + Constant.TABLE_DELETED_CREDIT);
         onCreate(db);
     }
 

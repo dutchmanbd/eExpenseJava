@@ -27,7 +27,7 @@ import java.util.List;
 import backbencers.nub.dailycostcalc.R;
 import backbencers.nub.dailycostcalc.constant.Constant;
 
-public class AddDebitActivity extends AppCompatActivity implements View.OnClickListener {
+public class DebitEditorActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageButton ibDebitSave, ibDebitClear;
     private TextView tvDebitDate;
@@ -51,7 +51,7 @@ public class AddDebitActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_debit);
+        setContentView(R.layout.activity_debit_editor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

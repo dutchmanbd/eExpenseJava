@@ -37,6 +37,7 @@ import backbencers.nub.dailycostcalc.activities.CreditEditorActivity;
 import backbencers.nub.dailycostcalc.adapter.CreditListAdapter;
 import backbencers.nub.dailycostcalc.constant.Constant;
 import backbencers.nub.dailycostcalc.database.ExpenseDataSource;
+import backbencers.nub.dailycostcalc.model.Category;
 import backbencers.nub.dailycostcalc.model.Credit;
 
 /**
@@ -61,6 +62,7 @@ public class CreditFragment extends Fragment {
     private SharedPreferences permissionStatus;
     private boolean sentToSettings = false;
     private boolean sentToCreditEditor = false;
+    private List<String> categoriesString = new ArrayList<>();
 
     // stopped here
     // http://www.androidhive.info/2016/11/android-working-marshmallow-m-runtime-permissions/
@@ -256,6 +258,26 @@ public class CreditFragment extends Fragment {
         }
     }
 
+    // Get all categories from database
+    private void getCategoriesFromDatabase() {
+        ArrayList<Category> categories = expenseDataSource.getAllCategories();
+
+        for (int i = 0; i < categories.size(); i++) {
+            String c = categories.get(i).getCategoryName();
+            categoriesString.add(c);
+        }
+    }
+
+    // Is the category existed on database
+    private boolean isCategoryExisted(String category) {
+        for (String s : categoriesString) {
+            if (s.equalsIgnoreCase(category)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void showCreditDetailInDialog(int position) {
         AlertDialog.Builder builder;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -294,6 +316,8 @@ public class CreditFragment extends Fragment {
                 for (int idx = 0; idx < creditCursor.getColumnCount(); idx++) {
                     //msgData += " " + cursor.getColumnName(idx) + " : " + cursor.getString(idx) + "\n";
 
+                    //getCategoriesFromDatabase();
+
                     if (creditCursor.getColumnName(idx).equals("date")) {
                         timestamp = new Timestamp(creditCursor.getLong(idx));
                         intTimestamp = (int) (timestamp.getTime()%100000000);
@@ -322,6 +346,10 @@ public class CreditFragment extends Fragment {
 
                             credit.setCreditDescription(messageBodyNormal);
                             credit.setCreditAmount(findCreditAmountFromMessageBody(messageBodyLowerCase));
+
+                            /*if (!isCategoryExisted(credit.getCreditCategory())) {
+                                expenseDataSource.insertCategory(new Category("Bank"));
+                            }*/
 
                             if (!isCreditExisted(credit.getCreditTimestamp())) {
                                 expenseDataSource.insertCredit(credit);
@@ -370,8 +398,15 @@ public class CreditFragment extends Fragment {
 
     private boolean isCreditExisted(int creditTimestamp) {
         ArrayList<Credit> credits = expenseDataSource.getAllCredits();
+        ArrayList<Credit> deletedCredits = expenseDataSource.getAllDeletedCredits();
 
         for (Credit c : credits) {
+            if (c.getCreditTimestamp() == creditTimestamp) {
+                return true;
+            }
+        }
+
+        for (Credit c : deletedCredits) {
             if (c.getCreditTimestamp() == creditTimestamp) {
                 return true;
             }

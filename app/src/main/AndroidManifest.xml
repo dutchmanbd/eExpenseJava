@@ -31,7 +31,7 @@
         </activity>
         <activity android:name=".activities.ScanActivity" />
         <activity
-            android:name=".activities.AddDebitActivity"
+            android:name=".activities.DebitEditorActivity"
             android:label="@string/title_activity_add_debit"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.CreditEditorActivity"

@@ -51,7 +51,7 @@ public class ExpenseDataSource {
         return inserted>0 ? true:false;
     }
 
-    // add a credit to Credit table
+    // insert a credit to Credit table
     public boolean insertCredit(Credit credit) {
         this.open();
 
@@ -63,6 +63,24 @@ public class ExpenseDataSource {
         contentValues.put(Constant.COL_CREDIT_TIMESTAMP, credit.getCreditTimestamp());
 
         long inserted = database.insert(Constant.TABLE_CREDIT, null, contentValues);
+
+        this.close();
+
+        return inserted>0 ? true:false;
+    }
+
+    // insert a deleted credit to DeletedCredit table
+    public boolean insertDeletedCredit(Credit credit) {
+        this.open();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(Constant.COL_CREDIT_DATE, credit.getCreditDate());
+        contentValues.put(Constant.COL_CREDIT_CATEGORY, credit.getCreditCategory());
+        contentValues.put(Constant.COL_CREDIT_DESCRIPTION, credit.getCreditDescription());
+        contentValues.put(Constant.COL_CREDIT_AMOUNT, credit.getCreditAmount());
+        contentValues.put(Constant.COL_CREDIT_TIMESTAMP, credit.getCreditTimestamp());
+
+        long inserted = database.insert(Constant.TABLE_DELETED_CREDIT, null, contentValues);
 
         this.close();
 
@@ -164,6 +182,27 @@ public class ExpenseDataSource {
         this.open();
 
         Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_CREDIT, null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            for (int i=0; i<cursor.getCount(); i++) {
+                Credit credit = createCredit(cursor);
+                credits.add(credit);
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        database.close();
+
+        return credits;
+    }
+
+    // return all credits from credit table
+    public ArrayList<Credit> getAllDeletedCredits() {
+        ArrayList<Credit> credits = new ArrayList<>();
+        this.open();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_DELETED_CREDIT, null);
 
         if (cursor != null && cursor.getCount() > 0) {
             cursor.moveToFirst();

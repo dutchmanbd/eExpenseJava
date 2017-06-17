@@ -11,6 +11,7 @@ public class Constant {
     public static final String TABLE_DEBIT = "Debit";
     public static final String TABLE_CREDIT = "Credit";
     public static final String TABLE_CATEGORY = "Category";
+    public static final String TABLE_DELETED_CREDIT = "DeletedCredit";
 
     public static final String COL_ID = "Id";
 
@@ -39,6 +40,4 @@ public class Constant {
     public static final String PREF_DEBIT_OBJECT = "DEBIT_OBJECT";
 
     public static final String CATEGORY_BUNDLE = "Category";
-
-
 }

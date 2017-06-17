@@ -43,10 +43,11 @@ public class CreditEditorActivity extends AppCompatActivity {
     private EditText etCreditDescription;
     private EditText etCreditAmount;
     private ExpenseDataSource expenseDataSource;
-    private ArrayList<String> cat = new ArrayList<>();
+    private ArrayList<String> categoriesString = new ArrayList<>();
     private Intent intent;
     private String activityType;
     private int creditId;
+    private Credit credit;
     private boolean creditHasChanged = false;
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
@@ -71,8 +72,8 @@ public class CreditEditorActivity extends AppCompatActivity {
                 newFragment.show(getSupportFragmentManager(), "datePicker");
             }
         });
-        ArrayList<String> categories = getCategoriesFromDatabase();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, categories);
+        getCategoriesFromDatabase();
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, categoriesString);
         actvCreditCategory.setAdapter(adapter);
         actvCreditCategory.setThreshold(1);
         intent = getIntent();
@@ -88,7 +89,7 @@ public class CreditEditorActivity extends AppCompatActivity {
             creditId = intent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
             Log.e(TAG, "credit list item position: " + creditId);
             if (creditId > -1) {
-                Credit credit = expenseDataSource.getCredit(creditId);
+                credit = expenseDataSource.getCredit(creditId);
                 etCreditDate.setText(credit.getCreditDate());
                 actvCreditCategory.setText(credit.getCreditCategory());
                 etCreditDescription.setText(credit.getCreditDescription());
@@ -99,15 +100,12 @@ public class CreditEditorActivity extends AppCompatActivity {
         }
     }
 
-    private ArrayList<String> getCategoriesFromDatabase() {
+    private void getCategoriesFromDatabase() {
         ArrayList<Category> categories = expenseDataSource.getAllCategories();
-
         for (int i = 0; i < categories.size(); i++) {
             String c = categories.get(i).getCategoryName();
-            cat.add(c);
+            categoriesString.add(c);
         }
-
-        return cat;
     }
 
     private void initializeViews() {
@@ -199,7 +197,7 @@ public class CreditEditorActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                deletePet();
+                deleteCategory();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -220,11 +218,11 @@ public class CreditEditorActivity extends AppCompatActivity {
     /**
      * Perform the deletion of the pet in the database.
      */
-    private void deletePet() {
+    private void deleteCategory() {
         // Only perform the delete if this is an existing pet.
         if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
             boolean deleted = expenseDataSource.deleteCredit(creditId);
-
+            expenseDataSource.insertDeletedCredit(credit);
             // Show a toast message depending on whether or not the delete was successful.
             if (deleted) {
                 // If no rows were deleted, then there was an error with the delete.
@@ -280,7 +278,7 @@ public class CreditEditorActivity extends AppCompatActivity {
             Toast.makeText(this, "Please enter amount!", Toast.LENGTH_SHORT).show();
         } else {
 
-            if (!isExistedCategory(category)) {
+            if (!isCategoryExisted(category)) {
                 expenseDataSource.insertCategory(new Category(category));
             }
 
@@ -307,8 +305,8 @@ public class CreditEditorActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isExistedCategory(String category) {
-        for (String s : cat) {
+    private boolean isCategoryExisted(String category) {
+        for (String s : categoriesString) {
             if (s.equalsIgnoreCase(category)) {
                 return true;
             }
