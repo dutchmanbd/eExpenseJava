@@ -52,7 +52,6 @@ public class ScanActivity extends AppCompatActivity {
 
     private String category;
 
-
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -65,7 +64,8 @@ public class ScanActivity extends AppCompatActivity {
                 Toast.makeText(context, "Saved successfully!", Toast.LENGTH_SHORT).show();
                 finish();
             } else if(id == R.id.btnScanCancel){
-                moveToMain();
+                //moveToMain();
+                finish();
             }
 
         }
@@ -241,8 +241,6 @@ public class ScanActivity extends AppCompatActivity {
         finish();
 
     }
-
-
 
     private void inits(){
 
