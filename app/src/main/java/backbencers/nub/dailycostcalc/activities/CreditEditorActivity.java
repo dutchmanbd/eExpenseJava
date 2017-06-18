@@ -38,7 +38,7 @@ public class CreditEditorActivity extends AppCompatActivity {
     private String TAG = CreditEditorActivity.class.getSimpleName();
 
     private static EditText etCreditDate;
-    private ImageButton ibDebitCalendar;
+    private ImageButton ibCreditCalendar;
     private AutoCompleteTextView actvCreditCategory;
     private EditText etCreditDescription;
     private EditText etCreditAmount;
@@ -65,7 +65,7 @@ public class CreditEditorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         expenseDataSource = new ExpenseDataSource(this);
         initializeViews();
-        ibDebitCalendar.setOnClickListener(new View.OnClickListener() {
+        ibCreditCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
@@ -110,13 +110,13 @@ public class CreditEditorActivity extends AppCompatActivity {
 
     private void initializeViews() {
         etCreditDate = (EditText) findViewById(R.id.edit_text_credit_date);
-        ibDebitCalendar = (ImageButton) findViewById(R.id.image_button_credit_calendar);
+        ibCreditCalendar = (ImageButton) findViewById(R.id.image_button_credit_calendar);
         actvCreditCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_credit_category);
         etCreditDescription = (EditText) findViewById(R.id.edit_text_credit_description);
         etCreditAmount = (EditText) findViewById(R.id.edit_text_credit_amount);
 
         etCreditDate.setOnTouchListener(touchListener);
-        ibDebitCalendar.setOnTouchListener(touchListener);
+        ibCreditCalendar.setOnTouchListener(touchListener);
         actvCreditCategory.setOnTouchListener(touchListener);
         etCreditDescription.setOnTouchListener(touchListener);
         etCreditAmount.setOnTouchListener(touchListener);
@@ -129,7 +129,7 @@ public class CreditEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_credit_editor, menu);
+        getMenuInflater().inflate(R.menu.menu_editor, menu);
         return true;
     }
 
@@ -142,7 +142,7 @@ public class CreditEditorActivity extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
         // If this is a new credit, hide the "Delete" menu item.
         if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
-            MenuItem menuItem = menu.findItem(R.id.action_delete_credit);
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
             menuItem.setVisible(false);
         }
         return true;
@@ -176,12 +176,12 @@ public class CreditEditorActivity extends AppCompatActivity {
                 showUnsavedChangesDialog(discardButtonClickListener);
                 return true;
 
-            case R.id.action_save_credit:
+            case R.id.action_save:
                 saveCredit();
                 return true;
 
             // Respond to a click on the "Delete" menu option
-            case R.id.action_delete_credit:
+            case R.id.action_delete:
                 // Pop up confirmation dialog for deletion
                 showDeleteConfirmationDialog();
                 return true;
@@ -193,11 +193,11 @@ public class CreditEditorActivity extends AppCompatActivity {
         // Create an AlertDialog.Builder and set the message, and click listeners
         // for the postivie and negative buttons on the dialog.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setMessage(R.string.delete_credit_dialog_msg);
         builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User clicked the "Delete" button, so delete the pet.
-                deleteCategory();
+                deleteCredit();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -216,9 +216,9 @@ public class CreditEditorActivity extends AppCompatActivity {
     }
 
     /**
-     * Perform the deletion of the pet in the database.
+     * Perform the deletion of the credit in the database.
      */
-    private void deleteCategory() {
+    private void deleteCredit() {
         // Only perform the delete if this is an existing pet.
         if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
             boolean deleted = expenseDataSource.deleteCredit(creditId);

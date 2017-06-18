@@ -32,6 +32,7 @@ public class Constant {
     public static final String ACTIVITY_TYPE_ADD = "ActivityTypeAdd";
     public static final String ACTIVITY_TYPE_EDIT = "ActivityTypeEdit";
     public static final String CREDIT_ITEM_ID = "CreditItemPosition";
+    public static final String DEBIT_ITEM_ID = "DebitItemPosition";
 
     // For sharedpreferences
 

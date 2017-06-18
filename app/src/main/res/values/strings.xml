@@ -25,7 +25,7 @@
     <!-- Dialog button text for the option to keep editing the current credit [CHAR LIMIT=20] -->
     <string name="keep_editing">Keep Editing</string>
 
-    <string name="action_delete_credit">Delete</string>
+    <string name="action_delete">Delete</string>
 
     <!-- Dialog button text for the option to cancel deletion of the current credit [CHAR LIMIT=20] -->
     <string name="cancel">Cancel</string>
@@ -33,11 +33,20 @@
     <!-- Toast message in editor when current credit was successfully deleted [CHAR LIMIT=NONE] -->
     <string name="editor_delete_credit_successful">Credit deleted</string>
 
+    <!-- Toast message in editor when current debit was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_debit_successful">Debit deleted</string>
+
     <!-- Toast message in editor when current credit has failed to be deleted [CHAR LIMIT=NONE] -->
     <string name="editor_delete_credit_failed">Error with deleting credit!</string>
 
+    <!-- Toast message in editor when current debit has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_debit_failed">Error with deleting debit!</string>
+
     <!-- Dialog message to ask the user to confirm deleting the current credit [CHAR LIMIT=NONE] -->
-    <string name="delete_dialog_msg">Delete this credit?</string>
+    <string name="delete_credit_dialog_msg">Delete this credit?</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current debit [CHAR LIMIT=NONE] -->
+    <string name="delete_debit_dialog_msg">Delete this debit?</string>
 
     <!-- Dialog button text for the option to confirm deleting the current credit [CHAR LIMIT=20] -->
     <string name="delete">Delete</string>

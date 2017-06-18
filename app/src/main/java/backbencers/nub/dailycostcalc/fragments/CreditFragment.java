@@ -58,7 +58,7 @@ public class CreditFragment extends Fragment {
     private ListView creditListView;
     private TextView creditEmptyView;
     private View view;
-    private TextView tvFooterAmount;
+    private TextView tvFooterCreditAmount;
 
     private SharedPreferences permissionStatus;
     private boolean sentToSettings = false;
@@ -80,11 +80,8 @@ public class CreditFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         Log.e(TAG, "onCreateView");
-
         getActivity().setTitle("Credit");
-
         return view = inflater.inflate(R.layout.fragment_credit, container, false);
     }
 
@@ -97,9 +94,9 @@ public class CreditFragment extends Fragment {
         if (null != view) {
             creditListView = (ListView) view.findViewById(R.id.lv_credits);
             creditEmptyView = (TextView) view.findViewById(R.id.empty_view_credit);
-            loadingCreditProgressBar = (ProgressBar) view.findViewById(R.id.pb_loding_credits);
+            loadingCreditProgressBar = (ProgressBar) view.findViewById(R.id.pb_loading_credits);
             //Log.e(TAG, "footer amount text view initialized");
-            tvFooterAmount = (TextView) view.findViewById(R.id.text_view_amount);
+            tvFooterCreditAmount = (TextView) view.findViewById(R.id.text_view_amount_credit);
 
             expenseDataSource = new ExpenseDataSource(getContext());
 
@@ -399,7 +396,7 @@ public class CreditFragment extends Fragment {
             Log.e(TAG, "creditList size: " + creditList.size());
             adapter = new CreditListAdapter(getContext(), creditList);
             creditListView.setAdapter(adapter);
-            tvFooterAmount.setText("" + expenseDataSource.getTotalCreditAmount());
+            tvFooterCreditAmount.setText("" + expenseDataSource.getTotalCreditAmount());
         }
     }
 

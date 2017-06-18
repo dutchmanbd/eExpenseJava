@@ -141,65 +141,44 @@ public class AddDebitActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Go to scan activity
-
     private void moveToScan(){
-
         Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra(Constant.CATEGORY_BUNDLE,spCategory.getSelectedItem().toString());
         startActivity(intent);
         overridePendingTransition(0,0);
         finish();
-
     }
 
-
     //Get the camera permission on runtime
-
     private boolean hasPermissions(){
-
         int res = 0;
-
         //String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-
         for(String permission : permissions){
-
             res = checkCallingOrSelfPermission(permission);
-
             if(!(res == PackageManager.PERMISSION_GRANTED)){
                 return false;
             }
-
         }
-
         return true;
     }
 
     private void requestPerms(){
-
         //String[] permissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-
             requestPermissions(permissions, PERMS_REQUEST_CODE);
         }
-
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         boolean allowed = true;
 
         switch (requestCode){
-
             case PERMS_REQUEST_CODE:
-
                 for (int res : grantResults){
-
                     // if user granted permissions
                     allowed = allowed && (res == PackageManager.PERMISSION_GRANTED);
                 }
-
                 break;
 
             default:
@@ -209,36 +188,22 @@ public class AddDebitActivity extends AppCompatActivity implements View.OnClickL
         }
 
         if(allowed){
-
             //user granted all permissions we can perform out task
-
             moveToScan();
-
         } else{
             // we will give warning to user that they haven't granted permissions
-
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if(shouldShowRequestPermissionRationale(permissions[0])){
-
                     toast("Camera permission denied");
                 }
-
                 if(shouldShowRequestPermissionRationale(permissions[1])){
-
                     toast("Storage permission denied");
-
                 }
-
                 if(shouldShowRequestPermissionRationale(permissions[2])){
                     toast("Reader permission denied");
                 }
-
-
             }
-
         }
-
-
     }
 
     /*public DebitFragment() {

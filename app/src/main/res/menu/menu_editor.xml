@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_save_credit"
+        android:id="@+id/action_save"
         android:orderInCategory="1"
         android:title="@string/action_save"
         android:icon="@drawable/ic_check"
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_delete_credit"
-        android:title="@string/action_delete_credit"
+        android:id="@+id/action_delete"
+        android:title="@string/action_delete"
         app:showAsAction="never" />
 
 </menu>
