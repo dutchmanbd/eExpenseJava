@@ -31,15 +31,23 @@
         </activity>
         <activity android:name=".activities.ScanActivity" />
         <activity
-            android:name=".activities.DebitEditorActivity"
+            android:name=".activities.AddDebitActivity"
             android:label="@string/title_activity_add_debit"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.CreditEditorActivity"
+        <activity
+            android:name=".activities.CreditEditorActivity"
             android:label="@string/add_credit"
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity"/>
+                android:value=".activities.MainActivity" />
+        </activity>
+        <activity android:name=".activities.DebitEditorActivity"
+            android:label="@string/add_debit"
+            android:parentActivityName=".activities.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
         </activity>
     </application>
 

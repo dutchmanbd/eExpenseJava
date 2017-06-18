@@ -1,73 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="backbencers.nub.dailycostcalc.activities.CreditEditorActivity">
 
     <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:padding="16dp">
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_date"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:padding="4dp">
-
-            <EditText
-                android:id="@+id/edit_text_date"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_credit_date"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Date"
-                android:inputType="text|date"
-                android:textSize="22sp" />
-        </android.support.design.widget.TextInputLayout>
+                android:layout_weight="1"
+                android:padding="4dp">
+
+                <EditText
+                    android:id="@+id/edit_text_credit_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Date"
+                    android:inputType="text|date"
+                    android:textSize="22sp" />
+            </android.support.design.widget.TextInputLayout>
 
             <ImageButton
-                android:id="@+id/image_button_calendar"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/calendar"
-                android:background="#eeeeee"
+                android:id="@+id/image_button_credit_calendar"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:background="#eeeeee"
+                android:src="@drawable/calendar" />
         </LinearLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_category"
+            android:id="@+id/input_layout_credit_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/auto_complete_category"
-            android:hint="Category"
-            android:textSize="22sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete_credit_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Category"
+                android:textSize="22sp" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_amount"
+            android:id="@+id/input_layout_credit_amount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp">
 
             <EditText
-                android:id="@+id/edit_text_amount"
+                android:id="@+id/edit_text_credit_amount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Amount"
@@ -76,13 +75,13 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_layout_description"
+            android:id="@+id/input_layout_credit_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="4dp">
 
             <EditText
-                android:id="@+id/edit_text_description"
+                android:id="@+id/edit_text_credit_description"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                 android:gravity="start"

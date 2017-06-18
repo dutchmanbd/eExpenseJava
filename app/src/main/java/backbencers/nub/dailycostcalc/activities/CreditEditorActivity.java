@@ -38,13 +38,13 @@ public class CreditEditorActivity extends AppCompatActivity {
     private String TAG = CreditEditorActivity.class.getSimpleName();
 
     private static EditText etCreditDate;
-    private ImageButton ibCalendar;
+    private ImageButton ibDebitCalendar;
     private AutoCompleteTextView actvCreditCategory;
     private EditText etCreditDescription;
     private EditText etCreditAmount;
     private ExpenseDataSource expenseDataSource;
     private ArrayList<String> categoriesString = new ArrayList<>();
-    private Intent intent;
+    private Intent creditIntent;
     private String activityType;
     private int creditId;
     private Credit credit;
@@ -65,7 +65,7 @@ public class CreditEditorActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         expenseDataSource = new ExpenseDataSource(this);
         initializeViews();
-        ibCalendar.setOnClickListener(new View.OnClickListener() {
+        ibDebitCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
@@ -76,8 +76,8 @@ public class CreditEditorActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, categoriesString);
         actvCreditCategory.setAdapter(adapter);
         actvCreditCategory.setThreshold(1);
-        intent = getIntent();
-        activityType = intent.getStringExtra(Constant.ACTIVITY_TYPE);
+        creditIntent = getIntent();
+        activityType = creditIntent.getStringExtra(Constant.ACTIVITY_TYPE);
         Log.e(TAG, "Activity type: " + activityType);
 
         if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
@@ -86,7 +86,7 @@ public class CreditEditorActivity extends AppCompatActivity {
             setInitialDate();
         } else if (activityType.equals(Constant.ACTIVITY_TYPE_EDIT)) {
             setTitle("Edit Credit");
-            creditId = intent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
+            creditId = creditIntent.getIntExtra(Constant.CREDIT_ITEM_ID, -1);
             Log.e(TAG, "credit list item position: " + creditId);
             if (creditId > -1) {
                 credit = expenseDataSource.getCredit(creditId);
@@ -109,14 +109,14 @@ public class CreditEditorActivity extends AppCompatActivity {
     }
 
     private void initializeViews() {
-        etCreditDate = (EditText) findViewById(R.id.edit_text_date);
-        ibCalendar = (ImageButton) findViewById(R.id.image_button_calendar);
-        actvCreditCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_category);
-        etCreditDescription = (EditText) findViewById(R.id.edit_text_description);
-        etCreditAmount = (EditText) findViewById(R.id.edit_text_amount);
+        etCreditDate = (EditText) findViewById(R.id.edit_text_credit_date);
+        ibDebitCalendar = (ImageButton) findViewById(R.id.image_button_credit_calendar);
+        actvCreditCategory = (AutoCompleteTextView) findViewById(R.id.auto_complete_credit_category);
+        etCreditDescription = (EditText) findViewById(R.id.edit_text_credit_description);
+        etCreditAmount = (EditText) findViewById(R.id.edit_text_credit_amount);
 
         etCreditDate.setOnTouchListener(touchListener);
-        ibCalendar.setOnTouchListener(touchListener);
+        ibDebitCalendar.setOnTouchListener(touchListener);
         actvCreditCategory.setOnTouchListener(touchListener);
         etCreditDescription.setOnTouchListener(touchListener);
         etCreditAmount.setOnTouchListener(touchListener);

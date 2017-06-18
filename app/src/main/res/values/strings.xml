@@ -42,25 +42,26 @@
     <!-- Dialog button text for the option to confirm deleting the current credit [CHAR LIMIT=20] -->
     <string name="delete">Delete</string>
 
-    <string-array name="categorys">
-        <item>Beauty</item>
-        <item>Books</item>
-        <item>Business</item>
-        <item>Comics</item>
-        <item>Communication</item>
-        <item>Dating</item>
-        <item>Drink</item>
+    <string-array name="categories">
+        <item>Clothing</item>
+        <item>Charitable Giving</item>
         <item>Education</item>
-        <item>Events</item>
+        <item>Electronics</item>
+        <item>Entertainment</item>
+        <item>Fitness</item>
         <item>Food</item>
-        <item>Gift</item>
+        <item>Gifts</item>
         <item>Health</item>
-        <item>HouseHold</item>
-        <item>Library</item>
-        <item>Transport</item>
-
+        <item>Household</item>
+        <item>Investments</item>
+        <item>Loan Payment</item>
+        <item>Miscellaneous</item>
+        <item>Rent</item>
+        <item>Transportation</item>
+        <item>Utility Bills</item>
+        <item>Vacation</item>
     </string-array>
-    <string name="title_activity_add_debit">AddDebitActivity</string>
 
+    <string name="title_activity_add_debit">AddDebitActivity</string>
 
 </resources>
