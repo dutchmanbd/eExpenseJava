@@ -155,8 +155,8 @@ public class ExpenseDataSource {
     }
 
     // return all debit amounts from a specific date
-    private ArrayList<Double> getDebitAmountsInThisDate(String date) {
-        ArrayList<Double> debitAmounts = new ArrayList<>();
+    private ArrayList<Debit> getDebitsInThisDate(String date) {
+        ArrayList<Debit> debits = new ArrayList<>();
         this.open();
 
         Cursor cursor = database.rawQuery("SELECT * FROM " + Constant.TABLE_DEBIT + " WHERE " +
@@ -166,14 +166,14 @@ public class ExpenseDataSource {
             cursor.moveToFirst();
             for (int i=0; i<cursor.getCount(); i++) {
                 Debit debit = createDebit(cursor);
-                debitAmounts.add(debit.getDebitAmount());
+                debits.add(debit);
                 cursor.moveToNext();
             }
         }
         cursor.close();
         database.close();
 
-        return debitAmounts;
+        return debits;
     }
 
     // return all credits from credit table

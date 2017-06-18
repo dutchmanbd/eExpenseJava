@@ -34,6 +34,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_CREDIT_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_DELETED_CREDIT_TABLE);
+        insertInitialCategories(db);
+    }
+
+    private void insertInitialCategories(SQLiteDatabase db) {
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 1 + ", \"Clothing\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 2 + ", \"Charitable Giving\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 3 + ", \"Education\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 4 + ", \"Electronics\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 5 + ", \"Entertainment\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 6 + ", \"Fitness\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 7 + ", \"Food\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 8 + ", \"Gifts\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 9 + ", \"Health\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 10 + ", \"Household\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 11 + ", \"Investment\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 12 + ", \"Loan Payment\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 13 + ", \"Miscellaneous\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 14 + ", \"Rent\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 15 + ", \"Transportation\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 16 + ", \"Utility Bills\");");
+        db.execSQL("INSERT INTO " + Constant.TABLE_CATEGORY + " VALUES (" + 17 + ", \"Vacation\");");
     }
 
     @Override
